@@ -1,0 +1,10 @@
+.node-container {
+  display: flex;
+  align-items: center;
+  border: 2px solid #888;
+  border-radius: 8px;
+  width: fit-content;
+  background: #fff;
+  gap: 8px;
+  padding: 8px;
+}
