@@ -1,6 +1,7 @@
 import "cubing/twisty";
 import { TwistyPlayer } from "cubing/twisty";
 import { Node } from "./node";
+import { connectNodes } from "./connections";
 
 class App {
   nodeMap: Map<string, Node> = new Map();
@@ -11,11 +12,22 @@ class App {
 
   createNodes(alg: string, prevNode?: Node) {
     if (this.nodeMap.has(alg) || alg.split(" ").length > 2) {
+      // If node exists and prevNode is provided, connect them with a line
+      if (this.nodeMap.has(alg) && prevNode) {
+        const existingNode = this.nodeMap.get(alg)!;
+        // Only add a line if not already connected to this prevNode
+        // (No need to check prevNode property, just always connect if not already visually connected)
+        connectNodes(existingNode, prevNode);
+      }
       return;
     }
     const splitAlg = alg.split(" ");
     const lastMove = splitAlg[splitAlg.length - 1];
-    this.nodeMap.set(alg, new Node(alg, prevNode));
+    const node = new Node(alg, prevNode);
+    this.nodeMap.set(alg, node);
+    if (prevNode) {
+      connectNodes(node, prevNode);
+    }
     if (lastMove !== "U2") {
       this.createNodes(alg + " U2");
     }

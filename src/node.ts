@@ -7,8 +7,6 @@ export class Node {
   private isDragging: boolean = false;
   private offsetX: number = 0;
   private offsetY: number = 0;
-  private line?: SVGLineElement;
-  private prevNode?: Node;
   private static placedRects: Array<{left: number, top: number, right: number, bottom: number}> = [];
   private static startX = 60;
   private static startY = 60;
@@ -97,61 +95,6 @@ export class Node {
     this.container.style.zIndex = "1";
     document.body.appendChild(this.container);
 
-    // Draw line to previous node if provided
-    if (prevNode) {
-      this.prevNode = prevNode;
-      // Create SVG if not present, and always move to top of body
-      let svg = document.getElementById("node-lines-svg") as unknown as SVGSVGElement | null;
-      if (!svg) {
-        svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-        svg.setAttribute("id", "node-lines-svg");
-        svg.style.position = "absolute";
-        svg.style.top = "0";
-        svg.style.left = "0";
-        svg.style.width = "100vw";
-        svg.style.height = "100vh";
-        svg.style.pointerEvents = "none";
-        svg.style.zIndex = "0";
-        document.body.insertBefore(svg, document.body.firstChild);
-      } else {
-        // Always move SVG to top so lines are under nodes
-        if (svg.parentElement) svg.parentElement.insertBefore(svg, svg.parentElement.firstChild);
-      }
-      // Create the line
-      this.line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-      this.line.setAttribute("stroke", "#444");
-      this.line.setAttribute("stroke-width", "2");
-      svg.appendChild(this.line);
-
-      // Function to update line position
-      const updateLine = () => {
-        const rect1 = this.container.getBoundingClientRect();
-        const rect2 = prevNode.container.getBoundingClientRect();
-        const x1 = rect1.left + rect1.width / 2 + window.scrollX;
-        const y1 = rect1.top + rect1.height / 2 + window.scrollY;
-        const x2 = rect2.left + rect2.width / 2 + window.scrollX;
-        const y2 = rect2.top + rect2.height / 2 + window.scrollY;
-        this.line!.setAttribute("x1", x1.toString());
-        this.line!.setAttribute("y1", y1.toString());
-        this.line!.setAttribute("x2", x2.toString());
-        this.line!.setAttribute("y2", y2.toString());
-      };
-
-      // Update line on drag and on window resize/scroll
-      const observer = new MutationObserver(updateLine);
-      observer.observe(this.container, { attributes: true, attributeFilter: ["style"] });
-      observer.observe(prevNode.container, { attributes: true, attributeFilter: ["style"] });
-      window.addEventListener("resize", updateLine);
-      window.addEventListener("scroll", updateLine);
-
-      // Also update after initial placement
-      setTimeout(updateLine, 0);
-
-      // Save updateLine for use in drag events
-      (this as any)._updateLine = updateLine;
-      (prevNode as any)._updateLine = updateLine;
-    }
-
     // Drag event handlers
     this.container.addEventListener("mousedown", (e) => {
       this.isDragging = true;
@@ -165,13 +108,6 @@ export class Node {
       if (!this.isDragging) return;
       this.container.style.left = `${e.clientX - this.offsetX}px`;
       this.container.style.top = `${e.clientY - this.offsetY}px`;
-      // Update line if present
-      if (this.line && (this as any)._updateLine) {
-        (this as any)._updateLine();
-      }
-      if (this.prevNode && (this.prevNode as any)._updateLine) {
-        (this.prevNode as any)._updateLine();
-      }
     });
 
     document.addEventListener("mouseup", () => {
