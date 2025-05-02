@@ -1,6 +1,8 @@
 import { TwistyPlayer } from "cubing/twisty";
+import { RubiksCube } from "./cube";
 
 export class Node {
+  cube = new RubiksCube();
   uLayer: TwistyPlayer;
   dLayer: TwistyPlayer;
   container: HTMLDivElement;
@@ -13,6 +15,7 @@ export class Node {
   private static margin = 16; // Minimal space between nodes
 
   constructor(alg: string = "", prevNode?: Node) {
+    this.cube.applyMoves(alg);
     this.uLayer = new TwistyPlayer({
       visualization: "experimental-2D-LL",
       background: "none",
@@ -117,5 +120,9 @@ export class Node {
         document.body.style.userSelect = "";
       }
     });
+  }
+
+  public areEqual(otherAlg: string) {
+
   }
 }

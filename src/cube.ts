@@ -287,9 +287,10 @@ class RubiksCube {
     }
 
     public areEqual(cube: RubiksCube): boolean {
+      const filterEdges = (arr: any[]) => arr.filter((_, i) => i < 4 || i > 7);
         return (
-            this.arraysEqual(this.edgePermutation, cube.edgePermutation) &&
-            this.arraysEqual(this.edgeOrientation, cube.edgeOrientation) &&
+          this.arraysEqual(filterEdges(this.edgePermutation), filterEdges(cube.edgePermutation)) &&
+          this.arraysEqual(filterEdges(this.edgeOrientation), filterEdges(cube.edgeOrientation)) &&
             this.arraysEqual(this.cornerPermutation, cube.cornerPermutation) &&
             this.arraysEqual(this.cornerOrientation, cube.cornerOrientation)
         );

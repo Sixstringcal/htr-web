@@ -1,7 +1,10 @@
 import {
   Node
-} from "./chunks/chunk-LH3AK4D5.js";
+} from "./chunks/chunk-HA3PKLV2.js";
 import "./chunks/chunk-62J464JL.js";
+import {
+  RubiksCube
+} from "./chunks/chunk-5MTSTATH.js";
 import "./chunks/chunk-V6Y2QZR4.js";
 
 // src/main.ts
@@ -10,30 +13,207 @@ var App = class {
   constructor() {
     this.createNodes("");
   }
+  alreadyExistsDifferently(alg) {
+    var value = null;
+    Array.from(this.nodeMap.keys()).some(
+      (key) => {
+        var cube1 = new RubiksCube();
+        var cube2 = new RubiksCube();
+        cube1.applyMoves(key);
+        cube2.applyMoves(alg);
+        if (cube1.areEqual(cube2)) {
+          console.log("Already exists", key);
+          value = key;
+          return true;
+        }
+        cube1.applyMoves("U2");
+        if (cube1.areEqual(cube2)) {
+          console.log("Already exists", key);
+          value = key;
+          return true;
+        }
+        cube1.applyMoves("D2");
+        if (cube1.areEqual(cube2)) {
+          console.log("Already exists", key);
+          value = key;
+          return true;
+        }
+        cube1.applyMoves("U2");
+        if (cube1.areEqual(cube2)) {
+          console.log("Already exists", key);
+          value = key;
+          return true;
+        }
+        cube1.applyMoves("U' D'");
+        if (cube1.areEqual(cube2)) {
+          console.log("Already exists", key);
+          value = key;
+          return true;
+        }
+        cube1.applyMoves("U2");
+        if (cube1.areEqual(cube2)) {
+          console.log("Already exists", key);
+          value = key;
+          return true;
+        }
+        cube1.applyMoves("D2");
+        if (cube1.areEqual(cube2)) {
+          console.log("Already exists", key);
+          value = key;
+          return true;
+        }
+        cube1.applyMoves("U2");
+        if (cube1.areEqual(cube2)) {
+          console.log("Already exists", key);
+          value = key;
+          return true;
+        }
+        cube1 = new RubiksCube();
+        cube1.applyMoves("U2");
+        cube2 = new RubiksCube();
+        cube1.applyMoves(key);
+        cube2.applyMoves(alg);
+        if (cube1.areEqual(cube2)) {
+          console.log("Already exists", key);
+          value = key;
+          return true;
+        }
+        cube1.applyMoves("U2");
+        if (cube1.areEqual(cube2)) {
+          console.log("Already exists", key);
+          value = key;
+          return true;
+        }
+        cube1.applyMoves("D2");
+        if (cube1.areEqual(cube2)) {
+          console.log("Already exists", key);
+          value = key;
+          return true;
+        }
+        cube1.applyMoves("U2");
+        if (cube1.areEqual(cube2)) {
+          console.log("Already exists", key);
+          value = key;
+          return true;
+        }
+        cube1.applyMoves("U' D'");
+        if (cube1.areEqual(cube2)) {
+          console.log("Already exists", key);
+          value = key;
+          return true;
+        }
+        cube1.applyMoves("U2");
+        if (cube1.areEqual(cube2)) {
+          console.log("Already exists", key);
+          value = key;
+          return true;
+        }
+        cube1.applyMoves("D2");
+        if (cube1.areEqual(cube2)) {
+          console.log("Already exists", key);
+          value = key;
+          return true;
+        }
+        cube1.applyMoves("U2");
+        if (cube1.areEqual(cube2)) {
+          console.log("Already exists", key);
+          value = key;
+          return true;
+        }
+        cube1 = new RubiksCube();
+        cube1.applyMoves("D2");
+        cube2 = new RubiksCube();
+        cube1.applyMoves(key);
+        cube2.applyMoves(alg);
+        if (cube1.areEqual(cube2)) {
+          console.log("Already exists", key);
+          value = key;
+          return true;
+        }
+        cube1.applyMoves("U2");
+        if (cube1.areEqual(cube2)) {
+          console.log("Already exists", key);
+          value = key;
+          return true;
+        }
+        cube1.applyMoves("D2");
+        if (cube1.areEqual(cube2)) {
+          console.log("Already exists", key);
+          value = key;
+          return true;
+        }
+        cube1.applyMoves("U2");
+        if (cube1.areEqual(cube2)) {
+          console.log("Already exists", key);
+          value = key;
+          return true;
+        }
+        cube1.applyMoves("U' D'");
+        if (cube1.areEqual(cube2)) {
+          console.log("Already exists", key);
+          value = key;
+          return true;
+        }
+        cube1.applyMoves("U2");
+        if (cube1.areEqual(cube2)) {
+          console.log("Already exists", key);
+          value = key;
+          return true;
+        }
+        cube1.applyMoves("D2");
+        if (cube1.areEqual(cube2)) {
+          console.log("Already exists", key);
+          value = key;
+          return true;
+        }
+        cube1.applyMoves("U2");
+        if (cube1.areEqual(cube2)) {
+          console.log("Already exists", key);
+          value = key;
+          return true;
+        }
+        return false;
+      }
+    );
+    return value;
+  }
   createNodes(alg, prevNode) {
-    if (this.nodeMap.has(alg) || alg.split(" ").length > 2) {
+    if (this.nodeMap.has(alg.trim())) {
+      console.log("Already exists", alg.trim());
+      return;
+    }
+    const matched = this.alreadyExistsDifferently(alg.trim());
+    if (matched !== null) {
+      console.log("Already written differently", alg.trim() + " as " + matched);
+      return;
+    }
+    if (alg.trim().split(" ").length > 3) {
       return;
     }
     const splitAlg = alg.split(" ");
     const lastMove = splitAlg[splitAlg.length - 1];
-    this.nodeMap.set(alg, new Node(alg, prevNode));
+    const node = new Node(alg.trim());
+    this.nodeMap.set(alg.trim(), node);
+    console.log(this.nodeMap);
+    if (prevNode) {
+    }
     if (lastMove !== "U2") {
-      this.createNodes(alg + " U2");
+      this.createNodes(alg.trim() + " U2");
     }
     if (lastMove !== "D2") {
-      this.createNodes(alg + " D2");
+      this.createNodes(alg.trim() + " D2");
     }
     if (lastMove !== "F2") {
-      this.createNodes(alg + " F2");
+      this.createNodes(alg.trim() + " F2");
     }
     if (lastMove !== "B2") {
-      this.createNodes(alg + " B2");
+      this.createNodes(alg.trim() + " B2");
     }
     if (lastMove !== "R2") {
-      this.createNodes(alg + " R2");
+      this.createNodes(alg.trim() + " R2");
     }
     if (lastMove !== "L2") {
-      this.createNodes(alg + " L2");
+      this.createNodes(alg.trim() + " L2");
     }
   }
 };

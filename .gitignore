@@ -1,1 +1,6 @@
 dist
+dist/dev/src/cube.js
+dist/dev/src/cube.js.map
+dist/dev/src/main.js
+dist/dev/src/main.js.map
+dist/dev/src/node.js
