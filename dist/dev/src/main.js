@@ -14,168 +14,31 @@ var App = class {
     this.createNodes("");
   }
   alreadyExistsDifferently(alg) {
-    var value = null;
-    Array.from(this.nodeMap.keys()).some(
-      (key) => {
-        var cube1 = new RubiksCube();
-        var cube2 = new RubiksCube();
+    const extraMoves = ["", "U2", "D2", "U2 D2", "U D'", "U2", "D2", "U2 D2"];
+    const startingMovesList = ["", "U2", "D2", "U D'", "U' D", "U D", "U' D'"];
+    for (const key of this.nodeMap.keys()) {
+      for (const startingMoves of startingMovesList) {
+        let cube1 = new RubiksCube();
+        let cube2 = new RubiksCube();
+        if (startingMoves) {
+          cube1.applyMoves(startingMoves);
+        }
         cube1.applyMoves(key);
         cube2.applyMoves(alg);
         if (cube1.areEqual(cube2)) {
           console.log("Already exists", key);
-          value = key;
-          return true;
+          return key;
         }
-        cube1.applyMoves("U2");
-        if (cube1.areEqual(cube2)) {
-          console.log("Already exists", key);
-          value = key;
-          return true;
+        for (const move of extraMoves) {
+          cube1.applyMoves(move);
+          if (cube1.areEqual(cube2)) {
+            console.log("Already exists", key);
+            return key;
+          }
         }
-        cube1.applyMoves("D2");
-        if (cube1.areEqual(cube2)) {
-          console.log("Already exists", key);
-          value = key;
-          return true;
-        }
-        cube1.applyMoves("U2");
-        if (cube1.areEqual(cube2)) {
-          console.log("Already exists", key);
-          value = key;
-          return true;
-        }
-        cube1.applyMoves("U' D'");
-        if (cube1.areEqual(cube2)) {
-          console.log("Already exists", key);
-          value = key;
-          return true;
-        }
-        cube1.applyMoves("U2");
-        if (cube1.areEqual(cube2)) {
-          console.log("Already exists", key);
-          value = key;
-          return true;
-        }
-        cube1.applyMoves("D2");
-        if (cube1.areEqual(cube2)) {
-          console.log("Already exists", key);
-          value = key;
-          return true;
-        }
-        cube1.applyMoves("U2");
-        if (cube1.areEqual(cube2)) {
-          console.log("Already exists", key);
-          value = key;
-          return true;
-        }
-        cube1 = new RubiksCube();
-        cube1.applyMoves("U2");
-        cube2 = new RubiksCube();
-        cube1.applyMoves(key);
-        cube2.applyMoves(alg);
-        if (cube1.areEqual(cube2)) {
-          console.log("Already exists", key);
-          value = key;
-          return true;
-        }
-        cube1.applyMoves("U2");
-        if (cube1.areEqual(cube2)) {
-          console.log("Already exists", key);
-          value = key;
-          return true;
-        }
-        cube1.applyMoves("D2");
-        if (cube1.areEqual(cube2)) {
-          console.log("Already exists", key);
-          value = key;
-          return true;
-        }
-        cube1.applyMoves("U2");
-        if (cube1.areEqual(cube2)) {
-          console.log("Already exists", key);
-          value = key;
-          return true;
-        }
-        cube1.applyMoves("U' D'");
-        if (cube1.areEqual(cube2)) {
-          console.log("Already exists", key);
-          value = key;
-          return true;
-        }
-        cube1.applyMoves("U2");
-        if (cube1.areEqual(cube2)) {
-          console.log("Already exists", key);
-          value = key;
-          return true;
-        }
-        cube1.applyMoves("D2");
-        if (cube1.areEqual(cube2)) {
-          console.log("Already exists", key);
-          value = key;
-          return true;
-        }
-        cube1.applyMoves("U2");
-        if (cube1.areEqual(cube2)) {
-          console.log("Already exists", key);
-          value = key;
-          return true;
-        }
-        cube1 = new RubiksCube();
-        cube1.applyMoves("D2");
-        cube2 = new RubiksCube();
-        cube1.applyMoves(key);
-        cube2.applyMoves(alg);
-        if (cube1.areEqual(cube2)) {
-          console.log("Already exists", key);
-          value = key;
-          return true;
-        }
-        cube1.applyMoves("U2");
-        if (cube1.areEqual(cube2)) {
-          console.log("Already exists", key);
-          value = key;
-          return true;
-        }
-        cube1.applyMoves("D2");
-        if (cube1.areEqual(cube2)) {
-          console.log("Already exists", key);
-          value = key;
-          return true;
-        }
-        cube1.applyMoves("U2");
-        if (cube1.areEqual(cube2)) {
-          console.log("Already exists", key);
-          value = key;
-          return true;
-        }
-        cube1.applyMoves("U' D'");
-        if (cube1.areEqual(cube2)) {
-          console.log("Already exists", key);
-          value = key;
-          return true;
-        }
-        cube1.applyMoves("U2");
-        if (cube1.areEqual(cube2)) {
-          console.log("Already exists", key);
-          value = key;
-          return true;
-        }
-        cube1.applyMoves("D2");
-        if (cube1.areEqual(cube2)) {
-          console.log("Already exists", key);
-          value = key;
-          return true;
-        }
-        cube1.applyMoves("U2");
-        if (cube1.areEqual(cube2)) {
-          console.log("Already exists", key);
-          value = key;
-          return true;
-        }
-        return false;
       }
-    );
-    return value;
+    }
+    return null;
   }
   createNodes(alg, prevNode) {
     if (this.nodeMap.has(alg.trim())) {
