@@ -168,6 +168,214 @@ class App {
         value = key;
         return true;
       }
+      cube1 = new RubiksCube()
+      cube1.applyMoves("U D'");
+      cube2 = new RubiksCube()
+      cube1.applyMoves(key);
+      cube2.applyMoves(alg);
+      if (cube1.areEqual(cube2)) {
+        console.log("Already exists", key);
+        value = key;
+        return true;
+      }
+      cube1.applyMoves("U2");
+      if (cube1.areEqual(cube2)) {
+        console.log("Already exists", key);
+        value = key;
+        return true;
+      }
+      cube1.applyMoves("D2");
+      if (cube1.areEqual(cube2)) {
+        console.log("Already exists", key);
+        value = key;
+        return true;
+      }
+      cube1.applyMoves("U2");
+      if (cube1.areEqual(cube2)) {
+        console.log("Already exists", key);
+        value = key;
+        return true;
+      }
+      cube1.applyMoves("U' D'");
+      if (cube1.areEqual(cube2)) {
+        console.log("Already exists", key);
+        value = key;
+        return true;
+      }
+      cube1.applyMoves("U2");
+      if (cube1.areEqual(cube2)) {
+        console.log("Already exists", key);
+        value = key;
+        return true;
+      }
+      cube1.applyMoves("D2");
+      if (cube1.areEqual(cube2)) {
+        console.log("Already exists", key);
+        value = key;
+        return true;
+      }
+      cube1.applyMoves("U2");
+      if (cube1.areEqual(cube2)) {
+        console.log("Already exists", key);
+        value = key;
+        return true;
+      }
+      cube1 = new RubiksCube()
+      cube1.applyMoves("U' D");
+      cube2 = new RubiksCube()
+      cube1.applyMoves(key);
+      cube2.applyMoves(alg);
+      if (cube1.areEqual(cube2)) {
+        console.log("Already exists", key);
+        value = key;
+        return true;
+      }
+      cube1.applyMoves("U2");
+      if (cube1.areEqual(cube2)) {
+        console.log("Already exists", key);
+        value = key;
+        return true;
+      }
+      cube1.applyMoves("D2");
+      if (cube1.areEqual(cube2)) {
+        console.log("Already exists", key);
+        value = key;
+        return true;
+      }
+      cube1.applyMoves("U2");
+      if (cube1.areEqual(cube2)) {
+        console.log("Already exists", key);
+        value = key;
+        return true;
+      }
+      cube1.applyMoves("U' D'");
+      if (cube1.areEqual(cube2)) {
+        console.log("Already exists", key);
+        value = key;
+        return true;
+      }
+      cube1.applyMoves("U2");
+      if (cube1.areEqual(cube2)) {
+        console.log("Already exists", key);
+        value = key;
+        return true;
+      }
+      cube1.applyMoves("D2");
+      if (cube1.areEqual(cube2)) {
+        console.log("Already exists", key);
+        value = key;
+        return true;
+      }
+      cube1.applyMoves("U2");
+      if (cube1.areEqual(cube2)) {
+        console.log("Already exists", key);
+        value = key;
+        return true;
+      }
+      cube1 = new RubiksCube()
+      cube1.applyMoves("U D");
+      cube2 = new RubiksCube()
+      cube1.applyMoves(key);
+      cube2.applyMoves(alg);
+      if (cube1.areEqual(cube2)) {
+        console.log("Already exists", key);
+        value = key;
+        return true;
+      }
+      cube1.applyMoves("U2");
+      if (cube1.areEqual(cube2)) {
+        console.log("Already exists", key);
+        value = key;
+        return true;
+      }
+      cube1.applyMoves("D2");
+      if (cube1.areEqual(cube2)) {
+        console.log("Already exists", key);
+        value = key;
+        return true;
+      }
+      cube1.applyMoves("U2");
+      if (cube1.areEqual(cube2)) {
+        console.log("Already exists", key);
+        value = key;
+        return true;
+      }
+      cube1.applyMoves("U' D'");
+      if (cube1.areEqual(cube2)) {
+        console.log("Already exists", key);
+        value = key;
+        return true;
+      }
+      cube1.applyMoves("U2");
+      if (cube1.areEqual(cube2)) {
+        console.log("Already exists", key);
+        value = key;
+        return true;
+      }
+      cube1.applyMoves("D2");
+      if (cube1.areEqual(cube2)) {
+        console.log("Already exists", key);
+        value = key;
+        return true;
+      }
+      cube1.applyMoves("U2");
+      if (cube1.areEqual(cube2)) {
+        console.log("Already exists", key);
+        value = key;
+        return true;
+      }
+      cube1 = new RubiksCube()
+      cube1.applyMoves("U' D'");
+      cube2 = new RubiksCube()
+      cube1.applyMoves(key);
+      cube2.applyMoves(alg);
+      if (cube1.areEqual(cube2)) {
+        console.log("Already exists", key);
+        value = key;
+        return true;
+      }
+      cube1.applyMoves("U2");
+      if (cube1.areEqual(cube2)) {
+        console.log("Already exists", key);
+        value = key;
+        return true;
+      }
+      cube1.applyMoves("D2");
+      if (cube1.areEqual(cube2)) {
+        console.log("Already exists", key);
+        value = key;
+        return true;
+      }
+      cube1.applyMoves("U2");
+      if (cube1.areEqual(cube2)) {
+        console.log("Already exists", key);
+        value = key;
+        return true;
+      }
+      cube1.applyMoves("U' D'");
+      if (cube1.areEqual(cube2)) {
+        console.log("Already exists", key);
+        value = key;
+        return true;
+      }
+      cube1.applyMoves("U2");
+      if (cube1.areEqual(cube2)) {
+        console.log("Already exists", key);
+        value = key;
+        return true;
+      }
+      cube1.applyMoves("D2");
+      if (cube1.areEqual(cube2)) {
+        console.log("Already exists", key);
+        value = key;
+        return true;
+      }
+      cube1.applyMoves("U2");
+      if (cube1.areEqual(cube2)) {
+        console.log("Already exists", key);
+        value = key;
+        return true;
+      }
       return false;
     }
     );
