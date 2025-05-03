@@ -102,9 +102,9 @@ class App {
       }
       levels.get(d)!.push(node);
     }
-    // Define vertical spacing and top offset.
-    const levelHeight = 150;
     const topOffset = 50;
+    // Increase vertical spacing by using a higher levelHeight value.
+    const levelHeight = 250; // was 150
     const viewportWidth = window.innerWidth;
 
     levels.forEach((nodes, depth) => {
