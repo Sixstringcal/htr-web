@@ -1,5 +1,4 @@
 import "cubing/twisty";
-import { TwistyPlayer } from "cubing/twisty";
 import { Node } from "./node";
 import { RubiksCube } from "./cube";
 import { connectNodes } from "./connections";
@@ -10,6 +9,32 @@ class App {
   constructor() {
     this.createNodes("", undefined);
     this.layoutNodes();
+  }
+
+  alreadyExistsIdentically(alg: string): string | null {
+    const extraMoves = ["", "U2 D2", "U D'", "U2 D2"];
+    const startingMovesList = ["", "U2 D2", "U D'", "U' D"];
+    for (const key of this.nodeMap.keys()) {
+      for (const startingMoves of startingMovesList) {
+        let cube1 = new RubiksCube();
+        let cube2 = new RubiksCube();
+        if (startingMoves) {
+          cube1.applyMoves(startingMoves);
+        }
+        cube1.applyMoves(key);
+        cube2.applyMoves(alg);
+        if (cube1.areEqual(cube2)) {
+          return key;
+        }
+        for (const move of extraMoves) {
+          cube1.applyMoves(move);
+          if (cube1.areEqual(cube2)) {
+            return key;
+          }
+        }
+      }
+    }
+    return null;
   }
 
   alreadyExistsDifferently(alg: string): string | null {
@@ -44,13 +69,11 @@ class App {
         cube1.applyMoves(key);
         cube2.applyMoves(alg);
         if (cube1.areEqual(cube2)) {
-          console.log("Already exists", key);
           return key;
         }
         for (const move of extraMoves) {
           cube1.applyMoves(move);
           if (cube1.areEqual(cube2)) {
-            console.log("Already exists", key);
             return key;
           }
         }
@@ -66,21 +89,36 @@ class App {
       }
       return;
     }
+    var node: Node | null = null;
     const matched = this.alreadyExistsDifferently(alg.trim());
     if (matched !== null) {
       if (prevNode) {
         connectNodes(this.nodeMap.get(matched)!, prevNode);
       }
+      node = this.nodeMap.get(matched)!;
+      if (alg.trim().split(" ").length < matched.split(" ").length) {
+        (node as Node).algorithm = (alg.trim());
+        (node as any).setDepth(alg.trim() == "" ? 0 : alg.trim().split(" ").length);
+      }
+    }
+    const matchedIdentically = this.alreadyExistsIdentically(alg.trim());
+    if (matchedIdentically !== null) {
+      if (prevNode) {
+        connectNodes(this.nodeMap.get(matchedIdentically)!, prevNode);
+      }
       return;
+    }
+    if (node == null) {
+      node = new Node(alg.trim());
+    }
+    (node as any).setDepth(alg.trim() == "" ? 0 : alg.trim().split(" ").length);
+    this.nodeMap.set(alg.trim(), node);
+
+    if (prevNode) {
+      connectNodes(node, prevNode);
     }
     if (alg.trim().split(" ").length > 3) {
       return;
-    }
-    const node = new Node(alg.trim());
-    (node as any).setDepth(alg.trim() == "" ? 0 : alg.trim().split(" ").length);
-    this.nodeMap.set(alg.trim(), node);
-    if (prevNode) {
-      connectNodes(node, prevNode);
     }
     const splitAlg = alg.split(" ");
     const lastMove = splitAlg[splitAlg.length - 1];

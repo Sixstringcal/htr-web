@@ -8,7 +8,7 @@ export class Node {
   container: HTMLElement | null = null;
   position: { x: number; y: number };
   public depth: number = 0;
-  private algorithm: string = "";
+  algorithm: string = "";
   private isDragging: boolean = false;
   private offsetX: number = 0;
   private offsetY: number = 0;
@@ -168,6 +168,9 @@ export class Node {
 
   public setDepth(depth: number) {
     this.depth = depth;
+    if(this.algorithm.trim() === "") {
+      this.depth = 0;
+    }
     this.updateInfoDisplay();
   }
 
