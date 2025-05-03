@@ -109,16 +109,21 @@ class App {
 
     levels.forEach((nodes, depth) => {
       const y = topOffset + depth * levelHeight;
-      // Calculate total width of nodes (using bounding rect) and spacing between them.
+      // Calculate total width of nodes (using bounding rect)
       let totalWidth = 0;
       nodes.forEach(node => {
         const rect = node.container!.getBoundingClientRect();
         totalWidth += rect.width;
       });
-      const gap = (viewportWidth - totalWidth) / (nodes.length + 1);
+      // Scale gap with depth. Increase gap multiplier based on depth
+      const baseMultiplier = 1.5;
+      const depthFactor = 1 + depth * 0.5; // Adjust factor as needed per depth level
+      const computedGap = ((viewportWidth - totalWidth) / (nodes.length + 1)) * baseMultiplier * depthFactor;
+      // Apply a minimum gap to ensure nodes never overlap too closely.
+      const gap = Math.max(computedGap, 20);
+
       let currentX = gap;
       nodes.forEach(node => {
-        // Update the container's left and top positions.
         node.container!.style.left = `${currentX}px`;
         node.container!.style.top = `${y}px`;
         const rect = node.container!.getBoundingClientRect();

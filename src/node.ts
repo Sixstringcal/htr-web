@@ -30,7 +30,7 @@ export class Node {
       controlPanel: "none",
       alg: "x2 " + alg,
     });
-
+    
     this.position = { x: 0, y: 0 }; // default position
 
     // Create container div with styles
@@ -47,16 +47,19 @@ export class Node {
     this.container.appendChild(this.uLayer);
     this.container.appendChild(this.dLayer);
 
-    // Temporarily add to body to measure size
+    // Temporarily add to body to measure full-size dimensions
     this.container.style.position = "absolute";
     this.container.style.visibility = "hidden";
     document.body.appendChild(this.container);
     const rect = this.container.getBoundingClientRect();
-    const nodeWidth = rect.width;
-    const nodeHeight = rect.height;
+    const originalWidth = rect.width;
+    const originalHeight = rect.height;
+    // We want the final container to be half size.
+    const nodeWidth = originalWidth * 0.5;
+    const nodeHeight = originalHeight * 0.5;
     this.container.style.visibility = "";
 
-    // Spiral search for a non-overlapping position
+    // Spiral search for a non-overlapping position using scaled dimensions
     let angle = 0;
     let radius = 0;
     let found = false;
@@ -96,9 +99,12 @@ export class Node {
       bottom: y + nodeHeight,
     });
 
+    // Apply container scaling so that the box and its children shrink
+    this.container.style.transform = "scale(0.5)";
+    this.container.style.transformOrigin = "top left";
     this.container.style.cursor = "grab";
     this.container.style.zIndex = "1";
-    document.body.appendChild(this.container);
+    // Note: We already appended the container above
 
     // Drag event handlers
     this.container.addEventListener("mousedown", (e) => {
