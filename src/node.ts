@@ -6,15 +6,20 @@ export class Node {
   uLayer: TwistyPlayer;
   dLayer: TwistyPlayer;
   container: HTMLElement | null = null;
-  position: { x: number; y: number };  
-  public depth: number = 0; // <-- added depth property
+  position: { x: number; y: number };
+  public depth: number = 0;
   private isDragging: boolean = false;
   private offsetX: number = 0;
   private offsetY: number = 0;
-  private static placedRects: Array<{left: number, top: number, right: number, bottom: number}> = [];
+  private static placedRects: Array<{
+    left: number;
+    top: number;
+    right: number;
+    bottom: number;
+  }> = [];
   private static startX = 60;
   private static startY = 60;
-  private static margin = 16; // Minimal space between nodes
+  private static margin = 16;
 
   constructor(alg: string = "", prevNode?: Node) {
     this.cube.applyMoves(alg);
@@ -30,10 +35,9 @@ export class Node {
       controlPanel: "none",
       alg: "x2 " + alg,
     });
-    
-    this.position = { x: 0, y: 0 }; // default position
 
-    // Create container div with styles
+    this.position = { x: 0, y: 0 };
+
     this.container = document.createElement("div");
     this.container.style.display = "flex";
     this.container.style.alignItems = "center";
@@ -47,19 +51,16 @@ export class Node {
     this.container.appendChild(this.uLayer);
     this.container.appendChild(this.dLayer);
 
-    // Temporarily add to body to measure full-size dimensions
     this.container.style.position = "absolute";
     this.container.style.visibility = "hidden";
     document.body.appendChild(this.container);
     const rect = this.container.getBoundingClientRect();
     const originalWidth = rect.width;
     const originalHeight = rect.height;
-    // We want the final container to be half size.
     const nodeWidth = originalWidth * 0.5;
     const nodeHeight = originalHeight * 0.5;
     this.container.style.visibility = "";
 
-    // Spiral search for a non-overlapping position using scaled dimensions
     let angle = 0;
     let radius = 0;
     let found = false;
@@ -74,11 +75,14 @@ export class Node {
         right: x + nodeWidth,
         bottom: y + nodeHeight,
       };
-      const collision = Node.placedRects.some(r =>
-        !(testRect.right + Node.margin < r.left ||
-          testRect.left > r.right + Node.margin ||
-          testRect.bottom + Node.margin < r.top ||
-          testRect.top > r.bottom + Node.margin)
+      const collision = Node.placedRects.some(
+        (r) =>
+          !(
+            testRect.right + Node.margin < r.left ||
+            testRect.left > r.right + Node.margin ||
+            testRect.bottom + Node.margin < r.top ||
+            testRect.top > r.bottom + Node.margin
+          )
       );
       if (!collision) {
         found = true;
@@ -99,14 +103,11 @@ export class Node {
       bottom: y + nodeHeight,
     });
 
-    // Apply container scaling so that the box and its children shrink
     this.container.style.transform = "scale(0.5)";
     this.container.style.transformOrigin = "top left";
     this.container.style.cursor = "grab";
     this.container.style.zIndex = "1";
-    // Note: We already appended the container above
 
-    // Drag event handlers
     this.container.addEventListener("mousedown", (e) => {
       this.isDragging = true;
       this.offsetX = e.clientX - this.container.offsetLeft;
@@ -130,7 +131,5 @@ export class Node {
     });
   }
 
-  public areEqual(otherAlg: string) {
-
-  }
+  public areEqual(otherAlg: string) {}
 }

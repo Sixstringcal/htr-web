@@ -8,15 +8,32 @@ class App {
   nodeMap: Map<string, Node> = new Map();
 
   constructor() {
-    // Start with the root at depth 0.
-    this.createNodes("", undefined, 0);
-    // After tree creation, layout nodes by depth.
+    this.createNodes("", undefined);
     this.layoutNodes();
   }
 
   alreadyExistsDifferently(alg: string): string | null {
-    const extraMoves = ["", "U2", "D2", "U2", "U2 D2", "U D'", "U2", "D2", "U2"];
-    const startingMovesList = ["", "U2", "D2", "U2 D2", "U D'", "U' D", "U D", "U' D'"];
+    const extraMoves = [
+      "",
+      "U2",
+      "D2",
+      "U2",
+      "U2 D2",
+      "U D'",
+      "U2",
+      "D2",
+      "U2",
+    ];
+    const startingMovesList = [
+      "",
+      "U2",
+      "D2",
+      "U2 D2",
+      "U D'",
+      "U' D",
+      "U D",
+      "U' D'",
+    ];
     for (const key of this.nodeMap.keys()) {
       for (const startingMoves of startingMovesList) {
         let cube1 = new RubiksCube();
@@ -42,9 +59,8 @@ class App {
     return null;
   }
 
-  createNodes(alg: string, prevNode?: Node, depth: number = 0) {
+  createNodes(alg: string, prevNode?: Node) {
     if (this.nodeMap.has(alg.trim())) {
-      console.log("Already exists", alg.trim());
       if (prevNode) {
         connectNodes(this.nodeMap.get(alg.trim())!, prevNode);
       }
@@ -52,7 +68,6 @@ class App {
     }
     const matched = this.alreadyExistsDifferently(alg.trim());
     if (matched !== null) {
-      console.log("Already written differently", alg.trim() + " as " + matched);
       if (prevNode) {
         connectNodes(this.nodeMap.get(matched)!, prevNode);
       }
@@ -61,39 +76,35 @@ class App {
     if (alg.trim().split(" ").length > 6) {
       return;
     }
-    // Create the node and assign its depth.
     const node = new Node(alg.trim());
-    (node as any).depth = depth;  // assign depth; you can also update Node's constructor if needed
+    (node as any).depth = alg.trim().split(" ").length;
     this.nodeMap.set(alg.trim(), node);
-    console.log(this.nodeMap);
     if (prevNode) {
       connectNodes(node, prevNode);
     }
-    // Recursive calls with increased depth
     const splitAlg = alg.split(" ");
     const lastMove = splitAlg[splitAlg.length - 1];
     if (lastMove !== "U2") {
-      this.createNodes(alg.trim() + " U2", node, depth + 1);
+      this.createNodes(alg.trim() + " U2", node);
     }
     if (lastMove !== "D2") {
-      this.createNodes(alg.trim() + " D2", node, depth + 1);
+      this.createNodes(alg.trim() + " D2", node);
     }
     if (lastMove !== "F2") {
-      this.createNodes(alg.trim() + " F2", node, depth + 1);
+      this.createNodes(alg.trim() + " F2", node);
     }
     if (lastMove !== "B2") {
-      this.createNodes(alg.trim() + " B2", node, depth + 1);
+      this.createNodes(alg.trim() + " B2", node);
     }
     if (lastMove !== "R2") {
-      this.createNodes(alg.trim() + " R2", node, depth + 1);
+      this.createNodes(alg.trim() + " R2", node);
     }
     if (lastMove !== "L2") {
-      this.createNodes(alg.trim() + " L2", node, depth + 1);
+      this.createNodes(alg.trim() + " L2", node);
     }
   }
 
   layoutNodes() {
-    // Group nodes by depth
     const levels = new Map<number, Node[]>();
     for (const node of this.nodeMap.values()) {
       const d = (node as any).depth as number;
@@ -103,27 +114,26 @@ class App {
       levels.get(d)!.push(node);
     }
     const topOffset = 50;
-    // Increase vertical spacing by using a higher levelHeight value.
-    const levelHeight = 250; // was 150
+    const levelHeight = 250;
     const viewportWidth = window.innerWidth;
 
     levels.forEach((nodes, depth) => {
       const y = topOffset + depth * levelHeight;
-      // Calculate total width of nodes (using bounding rect)
       let totalWidth = 0;
-      nodes.forEach(node => {
+      nodes.forEach((node) => {
         const rect = node.container!.getBoundingClientRect();
         totalWidth += rect.width;
       });
-      // Scale gap with depth. Increase gap multiplier based on depth
       const baseMultiplier = 1.5;
-      const depthFactor = 1 + depth * 0.5; // Adjust factor as needed per depth level
-      const computedGap = ((viewportWidth - totalWidth) / (nodes.length + 1)) * baseMultiplier * depthFactor;
-      // Apply a minimum gap to ensure nodes never overlap too closely.
+      const depthFactor = 1 + depth * 0.5;
+      const computedGap =
+        ((viewportWidth - totalWidth) / (nodes.length + 1)) *
+        baseMultiplier *
+        depthFactor;
       const gap = Math.max(computedGap, 20);
 
       let currentX = gap;
-      nodes.forEach(node => {
+      nodes.forEach((node) => {
         node.container!.style.left = `${currentX}px`;
         node.container!.style.top = `${y}px`;
         const rect = node.container!.getBoundingClientRect();
