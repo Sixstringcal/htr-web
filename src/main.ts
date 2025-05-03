@@ -2,6 +2,7 @@ import "cubing/twisty";
 import { TwistyPlayer } from "cubing/twisty";
 import { Node } from "./node";
 import { RubiksCube } from "./cube";
+import { connectNodes } from "./connections";
 
 class App {
   nodeMap: Map<string, Node> = new Map();
@@ -45,43 +46,49 @@ class App {
   createNodes(alg: string, prevNode?: Node) {
     if (this.nodeMap.has(alg.trim())) {
       console.log("Already exists", alg.trim());
-      // connectNodes(this.nodeMap.get(alg), prevNode);
+      if (prevNode) {
+        connectNodes(this.nodeMap.get(alg.trim())!, prevNode);
+      }
       return;
     }
     const matched = this.alreadyExistsDifferently(alg.trim());
     if (matched !== null) {
       console.log("Already written differently", alg.trim() + " as " + matched);
-      // connectNodes(this.nodeMap.get(matched), prevNode);
+      if (prevNode) {
+        connectNodes(this.nodeMap.get(matched)!, prevNode);
+      }
       return;
     }
-    if (alg.trim().split(" ").length > 3) {
+    if (alg.trim().split(" ").length > 6) {
       return;
     }
     const splitAlg = alg.split(" ");
     const lastMove = splitAlg[splitAlg.length - 1];
     const node = new Node(alg.trim());
+    // Assign a random position for demonstration purposes.
+    node.position = { x: Math.random() * 500, y: Math.random() * 500 };
     this.nodeMap.set(alg.trim(), node);
     console.log(this.nodeMap);
     if (prevNode) {
-      // connectNodes(node, prevNode);
+      connectNodes(node, prevNode);
     }
     if (lastMove !== "U2") {
-      this.createNodes(alg.trim() + " U2");
+      this.createNodes(alg.trim() + " U2", node);
     }
     if (lastMove !== "D2") {
-      this.createNodes(alg.trim() + " D2");
+      this.createNodes(alg.trim() + " D2", node);
     }
     if (lastMove !== "F2") {
-      this.createNodes(alg.trim() + " F2");
+      this.createNodes(alg.trim() + " F2", node);
     }
     if (lastMove !== "B2") {
-      this.createNodes(alg.trim() + " B2");
+      this.createNodes(alg.trim() + " B2", node);
     }
     if (lastMove !== "R2") {
-      this.createNodes(alg.trim() + " R2");
+      this.createNodes(alg.trim() + " R2", node);
     }
     if (lastMove !== "L2") {
-      this.createNodes(alg.trim() + " L2");
+      this.createNodes(alg.trim() + " L2", node);
     }
   }
 }

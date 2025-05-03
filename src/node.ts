@@ -5,7 +5,8 @@ export class Node {
   cube = new RubiksCube();
   uLayer: TwistyPlayer;
   dLayer: TwistyPlayer;
-  container: HTMLDivElement;
+  container: HTMLElement | null = null;
+  position: { x: number; y: number };
   private isDragging: boolean = false;
   private offsetX: number = 0;
   private offsetY: number = 0;
@@ -28,6 +29,8 @@ export class Node {
       controlPanel: "none",
       alg: "x2 " + alg,
     });
+
+    this.position = { x: 0, y: 0 }; // default position
 
     // Create a container div with compact styles
     this.container = document.createElement("div");
