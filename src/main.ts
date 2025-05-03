@@ -73,11 +73,11 @@ class App {
       }
       return;
     }
-    if (alg.trim().split(" ").length > 6) {
+    if (alg.trim().split(" ").length > 3) {
       return;
     }
     const node = new Node(alg.trim());
-    (node as any).depth = alg.trim().split(" ").length;
+    (node as any).setDepth(alg.trim() == "" ? 0 : alg.trim().split(" ").length);
     this.nodeMap.set(alg.trim(), node);
     if (prevNode) {
       connectNodes(node, prevNode);

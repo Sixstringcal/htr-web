@@ -8,6 +8,7 @@ export class Node {
   container: HTMLElement | null = null;
   position: { x: number; y: number };
   public depth: number = 0;
+  private algorithm: string = "";
   private isDragging: boolean = false;
   private offsetX: number = 0;
   private offsetY: number = 0;
@@ -20,9 +21,15 @@ export class Node {
   private static startX = 60;
   private static startY = 60;
   private static margin = 16;
+  private infoElement: HTMLDivElement;
 
   constructor(alg: string = "", prevNode?: Node) {
+    this.algorithm = alg;
     this.cube.applyMoves(alg);
+    if (prevNode) {
+      this.depth = prevNode.depth + 1;
+    }
+    
     this.uLayer = new TwistyPlayer({
       visualization: "experimental-2D-LL",
       background: "none",
@@ -40,6 +47,7 @@ export class Node {
 
     this.container = document.createElement("div");
     this.container.style.display = "flex";
+    this.container.style.flexDirection = "column";
     this.container.style.alignItems = "center";
     this.container.style.border = "1px solid #888";
     this.container.style.borderRadius = "4px";
@@ -48,8 +56,26 @@ export class Node {
     this.container.style.gap = "4px";
     this.container.style.padding = "4px 8px";
 
-    this.container.appendChild(this.uLayer);
-    this.container.appendChild(this.dLayer);
+    this.infoElement = document.createElement("div");
+    this.infoElement.style.fontSize = "12px";
+    this.infoElement.style.fontFamily = "monospace";
+    this.infoElement.style.padding = "2px 4px";
+    this.infoElement.style.backgroundColor = "#f0f0f0";
+    this.infoElement.style.borderRadius = "2px";
+    this.infoElement.style.marginBottom = "4px";
+    this.infoElement.style.width = "100%";
+    this.infoElement.style.textAlign = "center";
+    this.updateInfoDisplay(); 
+    this.container.appendChild(this.infoElement);
+
+    const playerContainer = document.createElement("div");
+    playerContainer.style.display = "flex";
+    playerContainer.style.alignItems = "center";
+    playerContainer.style.gap = "4px";
+    
+    playerContainer.appendChild(this.uLayer);
+    playerContainer.appendChild(this.dLayer);
+    this.container.appendChild(playerContainer);
 
     this.container.style.position = "absolute";
     this.container.style.visibility = "hidden";
@@ -129,6 +155,20 @@ export class Node {
         document.body.style.userSelect = "";
       }
     });
+  }
+
+  public updateInfoDisplay() {
+    if (this.infoElement) {
+      this.infoElement.textContent = `Depth: ${this.depth} | Alg: ${this.algorithm || "none"}`;
+      
+      const hue = Math.max(0, 120 - (this.depth * 20));
+      this.infoElement.style.color = `hsl(${hue}, 100%, 30%)`;
+    }
+  }
+
+  public setDepth(depth: number) {
+    this.depth = depth;
+    this.updateInfoDisplay();
   }
 
   public areEqual(otherAlg: string) {}
