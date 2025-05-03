@@ -11,8 +11,8 @@ class App {
   }
 
   alreadyExistsDifferently(alg: string): string | null {
-    const extraMoves = ["", "U2", "D2", "U2 D2", "U D'", "U2", "D2", "U2 D2"];
-    const startingMovesList = ["", "U2", "D2", "U D'", "U' D", "U D", "U' D'"];
+    const extraMoves = ["", "U2", "D2", "U2", "U2 D2", "U D'", "U2", "D2", "U2"];
+    const startingMovesList = ["", "U2", "D2", "U2 D2", "U D'", "U' D", "U D", "U' D'"];
 
     for (const key of this.nodeMap.keys()) {
       for (const startingMoves of startingMovesList) {
