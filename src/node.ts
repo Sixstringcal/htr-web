@@ -6,7 +6,8 @@ export class Node {
   uLayer: TwistyPlayer;
   dLayer: TwistyPlayer;
   container: HTMLElement | null = null;
-  position: { x: number; y: number };
+  position: { x: number; y: number };  
+  public depth: number = 0; // <-- added depth property
   private isDragging: boolean = false;
   private offsetX: number = 0;
   private offsetY: number = 0;
@@ -32,7 +33,7 @@ export class Node {
 
     this.position = { x: 0, y: 0 }; // default position
 
-    // Create a container div with compact styles
+    // Create container div with styles
     this.container = document.createElement("div");
     this.container.style.display = "flex";
     this.container.style.alignItems = "center";
@@ -55,7 +56,7 @@ export class Node {
     const nodeHeight = rect.height;
     this.container.style.visibility = "";
 
-    // Spiral search for closest non-overlapping position
+    // Spiral search for a non-overlapping position
     let angle = 0;
     let radius = 0;
     let found = false;
@@ -64,7 +65,6 @@ export class Node {
     const maxTries = 5000;
     let tries = 0;
     while (!found && tries < maxTries) {
-      // Try position
       const testRect = {
         left: x,
         top: y,
@@ -81,7 +81,6 @@ export class Node {
         found = true;
         break;
       }
-      // Spiral out
       angle += Math.PI / 6;
       radius += 8;
       x = Node.startX + Math.round(Math.cos(angle) * radius);
